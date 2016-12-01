@@ -18,7 +18,7 @@ and start to use it by js like this
 $('.className').game();
 ```
 
-open your html ,you will find a default demo
+open your html ,you will find a default demo and start to play with keyboard (w/a/s/d)
 
 #options
 >             emptyColor: '#eeeeee', //color of empty block
