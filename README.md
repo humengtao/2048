@@ -33,7 +33,7 @@ open your html ,you will find a default demo and start to play with keyboard (**
             blockColor_512: '#269abc',
             blockColor_1024: '#ac2925',
             blockColor_2048: '#2c2c2c',
-            size: 500 // box size such as {width:500,height:500}
+            size: 500 // container box size such as {width:500,height:500}
             
 #callback
 you alse can add your callback follow options
