@@ -35,6 +35,11 @@ open your html ,you will find a default demo and start to play with keyboard (**
             blockColor_2048: '#2c2c2c',
             size: 500 // box size such as {width:500,height:500}
             
+#callback
+you alse can add your callback follow options
+```javascript
+$('.className').game({options},callback);
+```
 #demo
 ```javascript
 $('.className').game({
@@ -42,5 +47,7 @@ $('.className').game({
   blockColor_16:'blue',
   blockColor_512:rgb(1,2,3),
   size:300
+},function(){
+  alert('game over!')
 })
 ```
