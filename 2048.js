@@ -2,7 +2,7 @@
  * Created by humengtao on 2016/12/1.
  */
 (function ($, window, document) {
-    function Game(el, option) {
+    function Game(el, option, callback) {
         this.el = el;
 //          包括所有block对象的数组
         this.blocks = [];
@@ -28,11 +28,13 @@
         };
 
         this.options = $.extend({}, this.defaults, option);
+        this.callback = callback;
     }
 
 //      定义Game的所有方法
     Game.prototype = {
-        start: function () {
+        start() {
+            console.log(this.callback);
             for (var i = 0; i < 16; i++) {
 
                 //初始化16个block对像，并把 isEmpty 设置为 true
@@ -59,8 +61,8 @@
                     lineHeight: ((this.options.size / 4) - 23) + 'px',
                     textAlign: 'center',
                     transition: 0.5 + 's',
-                    borderRadius:6+'%',
-                    backgroundColor:this.options.emptyColor
+                    borderRadius: 6 + '%',
+                    backgroundColor: this.options.emptyColor
                 });
             }
 
@@ -71,7 +73,7 @@
             this.moveListener();
         },
 
-        moveListener: function () {
+        moveListener() {
             var _this = this;
             var rowAll = [];
 
@@ -102,6 +104,13 @@
 
 //                  渲染页面
                 _this.loadHtml();
+
+//                  当没有空block 进行判断游戏是否结束
+                if (_this.emptyBlocks.length == 0) {
+                    if (_this.isEnd()) {
+                        _this.callback();
+                    }
+                }
             });
         },
 
@@ -222,7 +231,7 @@
             return arr;
         },
 
-        newBlock: function () {
+        newBlock() {
             var _this = this;
             if (this.emptyBlocks.length < 2) {
                 _this.createBlock();
@@ -233,7 +242,7 @@
             }
         },
 
-        createBlock: function () {
+        createBlock() {
 
 //              刷新 emptyBlocks 数组(因为再方块移动后产生了变化，必须刷新)
             this.freshEmptyBlocks();
@@ -248,7 +257,7 @@
             this.freshEmptyBlocks();
         },
 
-        freshEmptyBlocks: function () {
+        freshEmptyBlocks() {
             var _this = this;
             this.emptyBlocks = [];
             this.blocks.map(function (el) {
@@ -318,6 +327,34 @@
                 }
                 _this.setEmpty(false, index);
             }
+        },
+
+        isEnd(){
+            var arr = this.getAllBlocks();
+            var isEnd = true;
+            arr.map(function (el, index) {
+                if (!!arr[index + 1]) {
+                    if (arr[index].value == arr[index + 1].value) {
+                        isEnd = false;
+                    }
+                }
+                if (!!arr[index - 1]) {
+                    if (arr[index].value == arr[index - 1].value) {
+                        isEnd = false;
+                    }
+                }
+                if (!!arr[index + 4]) {
+                    if (arr[index].value == arr[index + 4].value) {
+                        isEnd = false;
+                    }
+                }
+                if (!!arr[index - 4]) {
+                    if (arr[index].value == arr[index - 4].value) {
+                        isEnd = false;
+                    }
+                }
+            });
+            return isEnd;
         }
     };
 
@@ -328,7 +365,7 @@
         this.bgColor = null;
     }
 
-    $.fn.game = function (option) {
-        return new Game(this, option).start();
+    $.fn.game = function (option, callback) {
+        return new Game(this, option, callback).start();
     }
 })(jQuery, window, document);

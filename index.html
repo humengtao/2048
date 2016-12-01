@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <title>2048-jquery</title>
     <style>
-        h1{
+        h1 {
             text-align: center;
         }
-        .container{
+
+        .container {
             margin: 10px auto;
         }
     </style>
@@ -22,6 +23,8 @@
     $('.container').game({
         emptyColor: '#fafafa',
         size: 500,
+    }, function () {
+        alert('over');
     });
 </script>
 </body>
