@@ -26,8 +26,8 @@
             blockColor_2048: '#2c2c2c',
             size: 500
         };
-//         限制最小的size为200
-        option.size = (option.size < 200) ? 200 : option.size;
+//         限制最小的size为250
+        option.size = (option.size < 250) ? 250 : option.size;
 
         this.options = $.extend({}, this.defaults, option);
         this.callback = (!!callback) ? callback : function () {
@@ -37,7 +37,9 @@
 
 //      定义Game的所有方法
     Game.prototype = {
+
         start() {
+
             for (var i = 0; i < 16; i++) {
 
                 //初始化16个block对像，并把 isEmpty 设置为 true
@@ -230,7 +232,7 @@
 
         newBlock() {
             var _this = this;
-            if (this.emptyBlocks.length == 1) {
+            if (this.emptyBlocks.length < 2) {
                 _this.createBlock();
             } else {
                 for (var i = 0; i < 2; i++) {

@@ -16,11 +16,14 @@
 <body>
 <h1>点击 (w a s d / 上 左 下 右) 中任意键开始游戏</h1>
 <div class="container"></div>
+<button>start</button>
 
 <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="2048.js"></script>
 <script type="text/javascript">
-    $('.container').game({emptyColor:'#eee',size:700});
+    $('button').click(()=> {
+        $('.container').game({emptyColor: '#eee', size: 700});
+    });
 </script>
 </body>
 </html>
