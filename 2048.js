@@ -230,7 +230,7 @@
 
         newBlock() {
             var _this = this;
-            if (this.emptyBlocks.length = 1) {
+            if (this.emptyBlocks.length == 1) {
                 _this.createBlock();
             } else {
                 for (var i = 0; i < 2; i++) {
