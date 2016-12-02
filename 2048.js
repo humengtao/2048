@@ -9,6 +9,9 @@
 //          值为空的block对象的数组
         this.emptyBlocks = [];
 
+        this.isListenKeyPress=false;
+
+//          默认options
         this.defaults = {
 //              定义空白格颜色
             emptyColor: '#eeeeee',
@@ -24,19 +27,38 @@
             blockColor_512: '#269abc',
             blockColor_1024: '#ac2925',
             blockColor_2048: '#2c2c2c',
-            size: 500
+            size: 500,
+            autoRestart: true  //有些结束自动重新开始自动重新开始
         };
 //         限制最小的size为250
         option.size = (option.size < 250) ? 250 : option.size;
 
+//         接收用户输入的callback
+        this.call = callback;
+
+//         定义options
         this.options = $.extend({}, this.defaults, option);
-        this.callback = (!!callback) ? callback : function () {
-            alert('game over');
-        };
+
+        this.callback = function (callback) {
+            ((!!callback) ? callback : function () {
+                alert('game over');
+            })(this.call);
+
+            if (this.options.autoRestart) {
+                this.init();
+            }
+        }
     }
 
 //      定义Game的所有方法
     Game.prototype = {
+        init(){
+            this.el.html('');
+            this.blocks = [];
+            this.emptyBlocks = [];
+
+            this.start();
+        },
 
         start() {
 
@@ -75,7 +97,9 @@
             this.loadHtml();
 
 //              启动键盘事件监听
-            this.moveListener();
+            if(!this.isListenKeyPress){
+                this.moveListener();
+            }
         },
 
         moveListener() {
@@ -83,6 +107,7 @@
             var rowAll = [];
 
             $(document).keypress(function (e) {
+                console.log(this);
 //                  检测按下键的charCode
                 switch (e.charCode) {
                     case 119:
@@ -111,9 +136,13 @@
                 _this.loadHtml();
 
             });
+
+            this.isListenKeyPress=true;
         },
 
         move(rowAll){
+            console.log($(window));
+
             var _this = this;
             rowAll.map(function (el, index) {
 
@@ -373,8 +402,16 @@
         this.bgColor = null;
     }
 
+    let initGame = '';
+
     $.fn.game = function (option, callback) {
-        new Game(this, option, callback).start();
+        if (!!initGame) {
+            initGame.init();
+
+        } else {
+            initGame = new Game(this, option, callback);
+            initGame.init();
+        }
         return this;
     }
 })(jQuery, document);
