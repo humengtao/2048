@@ -34,8 +34,7 @@ open your html ,you will find a default demo and start to play with keyboard (**
             blockColor_1024: '#ac2925',
             blockColor_2048: '#2c2c2c',
             size: 500 // container box size such as {width:500,height:500}
-            autoReastart: boolean  //布尔值，若为true，则游戏结束后自动重启一局新游戏， 若为false 则结束后保持最终状态
-            
+            autoReastart: boolean  // if true: auto restart a new game after ending            
 #callback
 you also can add your callback following options
 ```javascript
@@ -47,7 +46,8 @@ $('.className').game({
   emptyColor:'#ffff00',
   blockColor_16:'blue',
   blockColor_512:rgb(1,2,3),
-  size:300
+  size:300,
+  autoReastart:false
 },function(){
   alert('game over!')
 })
