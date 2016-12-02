@@ -1,7 +1,7 @@
 /**
  * Created by humengtao on 2016/12/1.
  */
-(function ($, window, document) {
+(function ($, document) {
     function Game(el, option, callback) {
         this.el = el;
 //          包括所有block对象的数组
@@ -26,15 +26,18 @@
             blockColor_2048: '#2c2c2c',
             size: 500
         };
+//         限制最小的size为200
+        option.size = (option.size < 200) ? 200 : option.size;
 
         this.options = $.extend({}, this.defaults, option);
-        this.callback = callback;
+        this.callback = (!!callback) ? callback : function () {
+            alert('game over');
+        };
     }
 
 //      定义Game的所有方法
     Game.prototype = {
         start() {
-            console.log(this.callback);
             for (var i = 0; i < 16; i++) {
 
                 //初始化16个block对像，并把 isEmpty 设置为 true
@@ -60,9 +63,9 @@
                     fontSize: (((this.options.size / 4) - 23) / 2) + 'px',
                     lineHeight: ((this.options.size / 4) - 23) + 'px',
                     textAlign: 'center',
-                    transition: 0.5 + 's',
-                    borderRadius: 6 + '%',
-                    backgroundColor: this.options.emptyColor
+                    transition: 0.4 + 's',
+                    borderRadius: 10 + '%',
+                    backgroundColor: this.options.emptyColor,
                 });
             }
 
@@ -105,12 +108,6 @@
 //                  渲染页面
                 _this.loadHtml();
 
-//                  当没有空block 进行判断游戏是否结束
-                if (_this.emptyBlocks.length == 0) {
-                    if (_this.isEnd()) {
-                        _this.callback();
-                    }
-                }
             });
         },
 
@@ -233,7 +230,7 @@
 
         newBlock() {
             var _this = this;
-            if (this.emptyBlocks.length < 2) {
+            if (this.emptyBlocks.length = 1) {
                 _this.createBlock();
             } else {
                 for (var i = 0; i < 2; i++) {
@@ -277,6 +274,15 @@
                 var bgColor = _this.blocks[index].bgColor;
                 $('.block:nth-child(' + (index + 1) + ')').css('backgroundColor', bgColor).html(_this.blocks[index].value);
             });
+
+//                当没有空block 进行判断游戏是否结束
+            if (_this.emptyBlocks.length == 0) {
+                if (_this.isEnd()) {
+                    setTimeout(()=> {
+                        _this.callback();
+                    }, 500);
+                }
+            }
         },
 
         setEmpty(isEmpty, index){
@@ -366,6 +372,7 @@
     }
 
     $.fn.game = function (option, callback) {
-        return new Game(this, option, callback).start();
+        new Game(this, option, callback).start();
+        return this;
     }
-})(jQuery, window, document);
+})(jQuery, document);
