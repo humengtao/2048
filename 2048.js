@@ -264,12 +264,11 @@
         },
 
         newBlock() {
-            let _this = this;
             if (this.emptyBlocks.length < 2) {
-                _this.createBlock();
+                this.createBlock();
             } else {
                 for (let i = 0; i < 2; i++) {
-                    _this.createBlock();
+                    this.createBlock();
                 }
             }
         },
