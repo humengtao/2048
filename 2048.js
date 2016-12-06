@@ -2,19 +2,21 @@
  * Created by humengtao on 2016/12/1.
  */
 (function ($, document) {
-    function Game(el, option, callback) {
+    function Game(el, opt, cb) {
         this.el = el;
 //          包括所有block对象的数组
         this.blocks = [];
 //          值为空的block对象的数组
         this.emptyBlocks = [];
 
-        this.isListenKeyPress=false;
+        this.isListenKeyPress = false;
 
 //          默认options
         this.defaults = {
+
 //              定义空白格颜色
             emptyColor: '#eeeeee',
+
 //              定义从 2 到 2048 的颜色
             blockColor_2: '#2e6da4',
             blockColor_4: '#31b0d5',
@@ -27,31 +29,37 @@
             blockColor_512: '#269abc',
             blockColor_1024: '#ac2925',
             blockColor_2048: '#2c2c2c',
+
+//             width:500px,height:500px
             size: 500,
-            autoRestart: true  //有些结束自动重新开始自动重新开始
+
+//             有些结束自动重新开始自动重新开始
+            autoRestart: true
         };
 //         限制最小的size为250
-        option.size = (option.size < 250) ? 250 : option.size;
-
-//         接收用户输入的callback
-        this.call = callback;
+        opt.size = (opt.size < 250) ? 250 : opt.size;
 
 //         定义options
-        this.options = $.extend({}, this.defaults, option);
+        this.options = $.extend({}, this.defaults, opt);
 
-        this.callback = function (callback) {
-            ((!!callback) ? callback : function () {
-                alert('game over');
-            })(this.call);
+//         接收用户输入的function
+        this.cb = cb;
 
+//         merge callback
+        this.callback = () => {
+            ((!!cb) ? cb : function () {
+            })(this.cb);
+            // 游戏结束后判断 autoRestart 参数
             if (this.options.autoRestart) {
                 this.init();
             }
         }
-    }
+    };
 
 //      定义Game的所有方法
     Game.prototype = {
+
+//        初始化(复位)
         init(){
             this.el.html('');
             this.blocks = [];
@@ -64,40 +72,40 @@
 
             for (var i = 0; i < 16; i++) {
 
-                //初始化16个block对像，并把 isEmpty 设置为 true
+//                初始化16个block对像，并把 isEmpty 设置为 true
                 this.blocks.push(new Block('', i, true));
                 this.emptyBlocks.push(new Block('', i, true));
 
-                //容器加入16个div映射
+//                容器加入16个div映射
                 this.el.append('<div class="block" id="block' + i + '" data-position=' + i + '>').css({
                     width: this.options.size + 'px',
                     height: this.options.size + 'px',
                 });
-
-                $('.block').css({
-                    margin: 0,
-                    padding: 10 + 'px',
-                    width: ((this.options.size / 4) - 23) + 'px',
-                    height: ((this.options.size / 4) - 23) + 'px',
-                    float: 'left',
-                    color: '#fff',
-                    borderWidth: 1 + 'px',
-                    borderColor: '#fff',
-                    borderStyle: 'double',
-                    fontSize: (((this.options.size / 4) - 23) / 2) + 'px',
-                    lineHeight: ((this.options.size / 4) - 23) + 'px',
-                    textAlign: 'center',
-                    transition: 0.4 + 's',
-                    borderRadius: 10 + '%',
-                    backgroundColor: this.options.emptyColor,
-                });
             }
+
+            $('.block').css({
+                margin: 0,
+                padding: 10 + 'px',
+                width: ((this.options.size / 4) - 23) + 'px',
+                height: ((this.options.size / 4) - 23) + 'px',
+                float: 'left',
+                color: '#fff',
+                borderWidth: 1 + 'px',
+                borderColor: '#fff',
+                borderStyle: 'double',
+                fontSize: (((this.options.size / 4) - 23) / 2) + 'px',
+                lineHeight: ((this.options.size / 4) - 23) + 'px',
+                textAlign: 'center',
+                transition: 0.4 + 's',
+                borderRadius: 10 + '%',
+                backgroundColor: this.options.emptyColor,
+            });
 
 //              渲染页面
             this.loadHtml();
 
 //              启动键盘事件监听
-            if(!this.isListenKeyPress){
+            if (!this.isListenKeyPress) {
                 this.moveListener();
             }
         },
@@ -107,7 +115,6 @@
             var rowAll = [];
 
             $(document).keypress(function (e) {
-                console.log(this);
 //                  检测按下键的charCode
                 switch (e.charCode) {
                     case 119:
@@ -137,12 +144,10 @@
 
             });
 
-            this.isListenKeyPress=true;
+            _this.isListenKeyPress = true;
         },
 
         move(rowAll){
-            console.log($(window));
-
             var _this = this;
             rowAll.map(function (el, index) {
 
@@ -171,7 +176,6 @@
 
 //          根据输入参数将16个block 按行或列，顺序和倒序分为四个数组
         getArrByFormat(direction, order){
-            var _this = this;
 
 //              获取所有block
             var arr = this.getAllBlocks();
@@ -307,8 +311,8 @@
             });
 
 //                当没有空block 进行判断游戏是否结束
-            if (_this.emptyBlocks.length == 0) {
-                if (_this.isEnd()) {
+            if (this.emptyBlocks.length == 0) {
+                if (this.isEnd()) {
                     setTimeout(()=> {
                         _this.callback();
                     }, 500);
@@ -316,16 +320,11 @@
             }
         },
 
-        setEmpty(isEmpty, index){
-            this.blocks[index].isEmpty = isEmpty;
-        },
-
         setValue(value, index){
-            var _this = this;
             this.blocks[index].value = value;
             if (value == 0) {
-                this.blocks[index].bgColor = _this.options.emptyColor;
-                _this.setEmpty(true, index);
+                this.blocks[index].bgColor = this.options.emptyColor;
+                this.blocks[index].isEmpty = true;
             } else {
                 switch (value) {
                     case 2:
@@ -362,7 +361,7 @@
                         this.blocks[index].bgColor = this.options.blockColor_2048;
                         break;
                 }
-                _this.setEmpty(false, index);
+                this.blocks[index].isEmpty = false;
             }
         },
 

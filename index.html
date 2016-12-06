@@ -4,8 +4,31 @@
     <meta charset="utf-8">
     <title>2048-jquery</title>
     <style>
+        body {
+            background-color: #fafafa;
+        }
+
         h1 {
+            font-family: SansSerif;
             text-align: center;
+        }
+
+        button {
+            position: relative;
+            left: 50%;
+            margin-left: -120px;
+            cursor: pointer;
+            width: 240px;
+            height: 80px;
+            font-size: 2em;
+            border: 1px solid #fafafa;
+            border-radius: 8px;
+            color: #fff;
+            background-color: #2e6da4;
+        }
+
+        button:hover {
+            background-color: #337ab7;
         }
 
         .container {
@@ -15,14 +38,17 @@
 </head>
 <body>
 <h1>点击 (w a s d / 上 左 下 右) 中任意键开始游戏</h1>
-<div class="container"></div>
 <button>start</button>
+<div class="container"></div>
 
 <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="2048.js"></script>
 <script type="text/javascript">
-    $('button').click(()=> {
-        $('.container').game({emptyColor: '#eee', size: 700,autoRestart:false});
+    $('button').click((e)=> {
+        $('.container').game({emptyColor: '#eee', size: 700, autoRestart: true}, () => {
+            alert('Good Game!!');
+        });
+        e.target.textContent = 'restart'
     });
 </script>
 </body>
