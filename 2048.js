@@ -70,7 +70,7 @@
 
         start() {
 
-            for (var i = 0; i < 16; i++) {
+            for (let i = 0; i < 16; i++) {
 
 //                初始化16个block对像，并把 isEmpty 设置为 true
                 this.blocks.push(new Block('', i, true));
@@ -111,8 +111,8 @@
         },
 
         moveListener() {
-            var _this = this;
-            var rowAll = [];
+            let _this = this;
+            let rowAll = [];
 
             $(document).keypress(function (e) {
 //                  检测按下键的charCode
@@ -148,14 +148,14 @@
         },
 
         move(rowAll){
-            var _this = this;
+            let _this = this;
             rowAll.map(function (el, index) {
 
 //                  标记位，表示有值且不能合并的 block 个数
-                var count = 0;
+                let count = 0;
 
-                for (var i = 1; i < 4; i++) {
-                    for (var j = i; j > count; j--) {
+                for (let i = 1; i < 4; i++) {
+                    for (let j = i; j > count; j--) {
                         if (el[j - 1].value == 0) {
                             el[j - 1].value = el[j].value;
                             el[j].value = 0;
@@ -178,16 +178,16 @@
         getArrByFormat(direction, order){
 
 //              获取所有block
-            var arr = this.getAllBlocks();
+            let arr = this.getAllBlocks();
 
 //              建立四个数组分别承载每 行/列 的block
-            var row1 = [];
-            var row2 = [];
-            var row3 = [];
-            var row4 = [];
+            let row1 = [];
+            let row2 = [];
+            let row3 = [];
+            let row4 = [];
 
 //              rowAll用于承载格式化后的 row1 ,row2, row3, row4
-            var rowAll = [];
+            let rowAll = [];
 
             switch (direction) {
 
@@ -256,7 +256,7 @@
         },
 
         getAllBlocks(){
-            var arr = [];
+            let arr = [];
             this.blocks.map(function (el) {
                 arr.push(el);
             });
@@ -264,11 +264,11 @@
         },
 
         newBlock() {
-            var _this = this;
+            let _this = this;
             if (this.emptyBlocks.length < 2) {
                 _this.createBlock();
             } else {
-                for (var i = 0; i < 2; i++) {
+                for (let i = 0; i < 2; i++) {
                     _this.createBlock();
                 }
             }
@@ -280,7 +280,7 @@
             this.freshEmptyBlocks();
 
 //              产生随机数，最大不能超过emptyBlocks 数组的长度
-            var randomPosition = ~~(Math.random() * (this.emptyBlocks.length));
+            let randomPosition = ~~(Math.random() * (this.emptyBlocks.length));
 
 //              设置新block的初始值
             this.setValue(2, this.emptyBlocks[randomPosition].position);
@@ -290,7 +290,7 @@
         },
 
         freshEmptyBlocks() {
-            var _this = this;
+            let _this = this;
             this.emptyBlocks = [];
             this.blocks.map(function (el) {
                 if (el.value == 0) {
@@ -304,9 +304,9 @@
         },
 
         loadHtml(){
-            var _this = this;
+            let _this = this;
             $('.block').map(function (index) {
-                var bgColor = _this.blocks[index].bgColor;
+                let bgColor = _this.blocks[index].bgColor;
                 $('.block:nth-child(' + (index + 1) + ')').css('backgroundColor', bgColor).html(_this.blocks[index].value);
             });
 
@@ -366,8 +366,8 @@
         },
 
         isEnd(){
-            var arr = this.getAllBlocks();
-            var isEnd = true;
+            let arr = this.getAllBlocks();
+            let isEnd = true;
             arr.map(function (el, index) {
                 if (!!arr[index + 1]) {
                     if (arr[index].value == arr[index + 1].value) {
