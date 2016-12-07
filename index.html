@@ -33,12 +33,31 @@
         .container {
             margin: 10px auto;
         }
+
+        .score,.record{
+            padding: 10px;
+            position: relative;
+            left: 50%;
+            margin-left: -330px;
+            cursor: pointer;
+            width: 660px;
+            height: 80px;
+            line-height: 80px;
+            font-size: 1.4em;
+            border: 1px solid #fafafa;
+            border-radius: 8px;
+            color: #fff;
+            background-color: #2c2c2c;
+        }
     </style>
 </head>
 <body>
 <h1>点击 (w a s d / 上 左 下 右) 中任意键开始游戏</h1>
 <button>start</button>
 <div class="container"></div>
+
+<div class="score">目前得分: <span> 0 </span></div>
+<div class="record">本地最高纪录: <span> 0 </span></div>
 
 <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="2048.js"></script>

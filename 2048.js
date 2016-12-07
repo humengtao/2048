@@ -12,6 +12,13 @@ class Game {
 
         this.isListenKeyPress = false;
 
+        this.score = 0;
+
+        if (!localStorage.getItem('2048record')) {
+            localStorage.setItem('2048record', 0);
+        }
+
+        this.record=localStorage.getItem('2048record');
 //          默认options
         this.defaults = {
 
@@ -55,7 +62,6 @@ class Game {
                 this.init();
             }
         }
-        console.log(this);
     }
 
 //        初始化(复位)
@@ -63,6 +69,8 @@ class Game {
         this.el.html('');
         this.blocks = [];
         this.emptyBlocks = [];
+        this.score = 0;
+        this.record = localStorage.getItem('2048record');
 
         this.start();
     }
@@ -162,6 +170,7 @@ class Game {
                         if (el[j].value == el[j - 1].value) {
                             el[j - 1].value *= 2;
                             el[j].value = 0;
+                            _this.score += 222 * el[j - 1].value;
                         }
 //                              每合并成功或者失败以后 count++
                         count++;
@@ -281,7 +290,7 @@ class Game {
         let randomPosition = ~~(Math.random() * (this.emptyBlocks.length));
 
 //              设置新block的初始值
-        this.setValue(2, this.emptyBlocks[randomPosition].position);
+        this.setValue([2, 2, 4][~~(Math.random() * 3)], this.emptyBlocks[randomPosition].position);
 
 //              再次刷新 emptyBlocks(因为产生了变化，必须刷新)；
         this.freshEmptyBlocks();
@@ -307,6 +316,11 @@ class Game {
             let bgColor = _this.blocks[index].bgColor;
             $('.block:nth-child(' + (index + 1) + ')').css('backgroundColor', bgColor).html(_this.blocks[index].value);
         });
+
+        $('.score span').text(this.score);
+        $('.record span').text((this.score > this.record) ? this.score : this.record);
+        if (this.score > this.record)
+            localStorage.setItem('2048record', this.score);
 
 //                当没有空block 进行判断游戏是否结束
         if (this.emptyBlocks.length == 0) {
